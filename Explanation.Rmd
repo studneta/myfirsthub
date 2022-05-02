@@ -1,0 +1,90 @@
+---
+title: "What the package does"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{What the package does}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(MATH4753humm0010)
+
+
+```
+
+
+# Introduction
+
+This is a package that contains many functions that arre useful for the course, MATH4753 at the University of Oklahoma. They due a range of different things such as making sophisticated plots. 
+
+# myboot2
+
+This function creates a histogram with a confidence interval and point estimate shown on the graph.
+
+```{r}
+myboot2(x = phis$INTTIME )
+```
+
+
+# mycltp
+
+This function creates a histogram of the means of the sample iterations.
+
+```{r}
+
+
+
+par(mar=c(1,1,1,1))
+
+mycltp(n=2, iter=1000,lambda=4)
+
+```
+
+
+
+
+# mymlnorm
+
+This function produces a graph of the mean and the standard deviation of a set of data.
+
+```{r}
+mymlnorm(x=c(10,12,13,15,12,11,10),mu=seq(5,15,length=1000),sig=seq(0.1,4,length=1000),lwd=2,labcex=1)
+```
+
+
+# myddt
+
+This function creates a plot, csv file, data, and table for the data set and variable entered. 
+
+
+myddt <- function(df, SPECIES)
+{
+
+  WEIGHT <- LENGTH <- RIVER <- NULL
+
+  newdf <- df %>% filter(SPECIES == {{SPECIES}})
+
+  g = ggplot(newdf, aes(x = WEIGHT, y = LENGTH)) + geom_point(aes(col=RIVER)) +
+    geom_smooth(formula = y~x +I(x^2), method = "lm") + ggtitle("Audrey Hummell")
+
+  print(g)
+
+  write.csv(x = newdf,
+            file = paste0("LvsWfor", SPECIES, ".csv" ),
+            row.names = FALSE
+            )
+
+  list = list(df = df, newdf = newdf, tab = table(df$RIVER)/length(df$RIVER))
+
+  return(list)
+
+}
+
